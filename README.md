@@ -48,3 +48,16 @@ Test accounts (password: password):
 
 Notes:
 - Free plan limits tenants to 3 notes. Admin can upgrade tenant via `POST /api/tenants/:slug/upgrade`.
+
+Production seeding (Vercel)
+---------------------------
+To seed the production database from Vercel in a controlled way, add a secret `SEED_SECRET` in your Vercel Environment Variables. Then call the protected seed endpoint once:
+
+```powershell
+# Example (PowerShell)
+Invoke-RestMethod -Method Post -Uri "https://<your-app>.vercel.app/api/seed" -Headers @{ 'x-seed-secret' = 'replace_with_your_seed_secret' }
+```
+
+Notes:
+- Set `SEED_SECRET` in Vercel before calling this endpoint. The endpoint will reset tenants/users/notes and recreate the test accounts.
+- After seeding, remove or rotate the `SEED_SECRET` to avoid accidental reseeds.
